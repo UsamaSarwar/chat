@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Memo Pro',
-        style: GoogleFonts.handlee(),),
+        style: GoogleFonts.handlee()),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -64,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, index) {
               return Dismissible(
                 key: Key(snapshot.data!.docs[index].id),
+                // Deletion of memo
                 onDismissed: (direction) =>
                     _memoCollection.doc(snapshot.data!.docs[index].id).delete(),
                 child: Padding(
@@ -105,6 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       title: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
+                        // Read Data from Firestore
                         child: Text(snapshot.data!.docs[index]['memo'],
                         style: GoogleFonts.handlee(),),
                       ),
@@ -143,6 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       trailing: IconButton(
                         icon: Icon(Icons.close_rounded, color: Colors.grey),
                         onPressed: () {
+                          // Delete memo from Firestore
                           _memoCollection
                               .doc(snapshot.data!.docs[index].id)
                               .delete();
@@ -161,6 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 initialValue: snapshot.data!.docs[index]
                                     ['memo'],
                                 onChanged: (value) {
+                                  // Updating memo in Firestore
                                   _memoCollection
                                       .doc(snapshot.data!.docs[index].id)
                                       .update({'memo': value});

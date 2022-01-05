@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -12,22 +13,47 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>Memo Pro v1.0</title>
   <link rel="manifest" href="manifest.json">
 </head>
+
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js?v=519805306');
+        navigator.serviceWorker.register('flutter_service_worker.js?v=77438513');
       });
     }
   </script>
   <script src="main.dart.js" type="application/javascript"></script>
+
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { firestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBlm_EQi7cs3Z3frfqUfg3F8hqnqVU2kFU",
+      authDomain: "fluttermemoapplication.firebaseapp.com",
+      projectId: "fluttermemoapplication",
+      storageBucket: "fluttermemoapplication.appspot.com",
+      messagingSenderId: "116888741394",
+      appId: "1:116888741394:web:d0baf78f4e5be239769acb"
+    };
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
+
 </body>
+
 </html>
