@@ -22,8 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Memo Pro',
-        style: GoogleFonts.handlee()),
+        title: Text('Memo Pro', style: GoogleFonts.handlee()),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -107,8 +106,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         // Read Data from Firestore
-                        child: Text(snapshot.data!.docs[index]['memo'],
-                        style: GoogleFonts.handlee(),),
+                        child: Text(
+                          snapshot.data!.docs[index]['memo'],
+                          style: GoogleFonts.handlee(),
+                        ),
                       ),
                       subtitle: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,7 +205,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       TextFormField(
                         style: GoogleFonts.handlee(),
                         maxLines: 5,
-                        decoration: InputDecoration(labelText: 'Memo',labelStyle: GoogleFonts.handlee()),
+                        decoration: InputDecoration(
+                            labelText: 'Memo',
+                            labelStyle: GoogleFonts.handlee()),
                         validator: (_val) {
                           if (_val!.isEmpty) {
                             return '*Required';
