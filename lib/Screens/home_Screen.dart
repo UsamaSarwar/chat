@@ -106,6 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         // Read Data from Firestore
+                        /// READ
                         child: Text(
                           snapshot.data!.docs[index]['memo'],
                           style: GoogleFonts.handlee(),
@@ -119,6 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Icon(Icons.date_range_rounded,
                                   size: 15, color: Colors.grey),
                               SizedBox(width: 5),
+                              /// READ
                               Text(
                                 snapshot.data!.docs[index]['date'],
                                 style: TextStyle(
@@ -132,6 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Icon(Icons.insert_drive_file,
                                   size: 15, color: Colors.grey),
                               SizedBox(width: 5),
+                              /// READ 
                               Text(
                                 snapshot.data!.docs[index].id,
                                 style: TextStyle(
@@ -236,6 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               key.currentState!.save();
                               Get.back();
                               // Add to Firestore
+                              /// CREATE
                               _memoCollection.add({
                                 'memo': _controller.memo.value,
                                 'date':
