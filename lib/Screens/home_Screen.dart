@@ -7,12 +7,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:memo/Controller/controller.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Controller _controller = Get.put(Controller());
+  final Controller _controller = Get.put(Controller());
   final _memoCollection =
       FirebaseFirestore.instance.collection('Memo Collection');
   // Form key (For Validation)
@@ -24,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('Memo Pro', style: GoogleFonts.handlee()),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -52,12 +54,12 @@ class _HomeScreenState extends State<HomeScreen> {
         stream: _memoCollection.snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
           return ListView.builder(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             // reverse: true,
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
@@ -82,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
@@ -117,13 +119,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.date_range_rounded,
+                              const Icon(Icons.date_range_rounded,
                                   size: 15, color: Colors.grey),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
+
                               /// READ
                               Text(
                                 snapshot.data!.docs[index]['date'],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 12,
                                 ),
                               ),
@@ -131,13 +134,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Row(
                             children: [
-                              Icon(Icons.insert_drive_file,
+                              const Icon(Icons.insert_drive_file,
                                   size: 15, color: Colors.grey),
-                              SizedBox(width: 5),
-                              /// READ 
+                              const SizedBox(width: 5),
+
+                              /// READ
                               Text(
                                 snapshot.data!.docs[index].id,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 10,
                                   color: Colors.grey,
                                 ),
@@ -147,15 +151,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       trailing: IconButton(
-                        icon: Icon(Icons.close_rounded, color: Colors.grey),
+                        icon:
+                            const Icon(Icons.close_rounded, color: Colors.grey),
                         onPressed: () {
                           // Delete memo from Firestore
                           _memoCollection
                               .doc(snapshot.data!.docs[index].id)
                               .delete();
                         },
-                      ),
-                      onTap: () {
+                      ),                   
+                      onLongPress: () {
                         // Create Form
                         Get.dialog(
                           AlertDialog(
@@ -164,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               key: key,
                               child: TextFormField(
                                 style: GoogleFonts.handlee(),
-                                maxLines: 5,
+                                maxLines: 7,
                                 initialValue: snapshot.data!.docs[index]
                                     ['memo'],
                                 onChanged: (value) {
@@ -194,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           showDialog(
             context: context,
@@ -228,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+                            children: const [
                               Icon(Icons.add),
                               Text("Add Memo"),
                             ],
