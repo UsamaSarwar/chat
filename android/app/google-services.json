@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "116888741394",
-    "project_id": "fluttermemoapplication",
-    "storage_bucket": "fluttermemoapplication.appspot.com"
+    "project_number": "425290406435",
+    "project_id": "publicchatroomsx",
+    "storage_bucket": "publicchatroomsx.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:116888741394:android:8192217c9f899fa6769acb",
+        "mobilesdk_app_id": "1:425290406435:android:5027204172560b866c6f96",
         "android_client_info": {
-          "package_name": "io.github.usamasarwar.memo"
+          "package_name": "com.example.chat_room"
         }
       },
       "oauth_client": [
         {
-          "client_id": "116888741394-ldtokvr36fjimg4bi1b0pvm5219isp1j.apps.googleusercontent.com",
+          "client_id": "425290406435-4da58sjo9lgejs5dm401ojdmva30a6nj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDlYPEYXqlIxd3HvlD0QwUwsZXhnMOCxWc"
+          "current_key": "AIzaSyCMZrIx3cC7M3xw-Nbkrbeo3lFbO5NkgKY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "116888741394-ldtokvr36fjimg4bi1b0pvm5219isp1j.apps.googleusercontent.com",
+              "client_id": "425290406435-4da58sjo9lgejs5dm401ojdmva30a6nj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

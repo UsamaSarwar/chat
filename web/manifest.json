@@ -1,6 +1,6 @@
 {
-    "name": "memo",
-    "short_name": "memo",
+    "name": "chat_room",
+    "short_name": "chat_room",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

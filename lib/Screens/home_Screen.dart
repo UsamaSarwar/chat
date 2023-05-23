@@ -1,30 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:memo/Controller/controller.dart';
+import 'package:chat_room/Controller/controller.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   final Controller _controller = Get.put(Controller());
-  final _memoCollection =
-      FirebaseFirestore.instance.collection('Memo Collection');
-  // Form key (For Validation)
+  final _memoCollection = FirebaseFirestore.instance.collection('chats');
   final GlobalKey<FormState> key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Memo Pro', style: GoogleFonts.handlee()),
+        centerTitle: true,
+        title: Text('Public Chat Room', style: GoogleFonts.handlee()),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -39,17 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         systemOverlayStyle: SystemUiOverlayStyle.light,
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.all(8.0),
-        //     child: Image.asset(
-        //       'assets/memo.png',
-        //     ),
-        //   )
-        // ],
       ),
-
-      // Get list of memo from firebase
       body: StreamBuilder<QuerySnapshot>(
         stream: _memoCollection.snapshots(),
         builder: (context, snapshot) {
@@ -58,21 +46,23 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CircularProgressIndicator(),
             );
           }
+
+          final memoDocs = snapshot.data!.docs;
+
           return ListView.builder(
             physics: const BouncingScrollPhysics(),
-            // reverse: true,
-            itemCount: snapshot.data!.docs.length,
+            itemCount: memoDocs.length,
             itemBuilder: (context, index) {
+              final memoDoc = memoDocs[index];
+
               return Dismissible(
-                key: Key(snapshot.data!.docs[index].id),
-                // Deletion of memo
+                key: Key(memoDoc.id),
                 onDismissed: (direction) =>
-                    _memoCollection.doc(snapshot.data!.docs[index].id).delete(),
+                    _memoCollection.doc(memoDoc.id).delete(),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
                   child: Card(
                     elevation: 4,
-                    // Round edge
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -107,10 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       title: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
-                        // Read Data from Firestore
-                        /// READ
                         child: Text(
-                          snapshot.data!.docs[index]['memo'],
+                          memoDoc['message'],
                           style: GoogleFonts.handlee(),
                         ),
                       ),
@@ -122,10 +110,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               const Icon(Icons.date_range_rounded,
                                   size: 15, color: Colors.grey),
                               const SizedBox(width: 5),
-
-                              /// READ
                               Text(
-                                snapshot.data!.docs[index]['date'],
+                                memoDoc['date'],
                                 style: const TextStyle(
                                   fontSize: 12,
                                 ),
@@ -137,10 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               const Icon(Icons.insert_drive_file,
                                   size: 15, color: Colors.grey),
                               const SizedBox(width: 5),
-
-                              /// READ
                               Text(
-                                snapshot.data!.docs[index].id,
+                                memoDoc.id,
                                 style: const TextStyle(
                                   fontSize: 10,
                                   color: Colors.grey,
@@ -152,41 +136,37 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       trailing: IconButton(
                         icon:
-                            const Icon(Icons.close_rounded, color: Colors.grey),
+                            const Icon(Icons.delete_forever, color: Colors.red),
                         onPressed: () {
-                          // Delete memo from Firestore
-                          _memoCollection
-                              .doc(snapshot.data!.docs[index].id)
-                              .delete();
+                          _memoCollection.doc(memoDoc.id).delete();
                         },
-                      ),                   
+                      ),
                       onLongPress: () {
-                        // Create Form
-                        Get.dialog(
-                          AlertDialog(
-                            // title: Text('Edit Memo'),
-                            content: Form(
-                              key: key,
-                              child: TextFormField(
-                                style: GoogleFonts.handlee(),
-                                maxLines: 7,
-                                initialValue: snapshot.data!.docs[index]
-                                    ['memo'],
-                                onChanged: (value) {
-                                  // Updating memo in Firestore
-                                  _memoCollection
-                                      .doc(snapshot.data!.docs[index].id)
-                                      .update({'memo': value});
-                                },
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter some text';
-                                  }
-                                  return null;
-                                },
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: Form(
+                                key: key,
+                                child: TextFormField(
+                                  style: GoogleFonts.handlee(),
+                                  maxLines: 1,
+                                  initialValue: memoDoc['message'],
+                                  onChanged: (value) {
+                                    _memoCollection
+                                        .doc(memoDoc.id)
+                                        .update({'message': value});
+                                  },
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         );
                       },
                     ),
@@ -212,41 +192,41 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: <Widget>[
                       TextFormField(
                         style: GoogleFonts.handlee(),
-                        maxLines: 5,
+                        maxLines: 1,
                         decoration: InputDecoration(
-                            labelText: 'Memo',
-                            labelStyle: GoogleFonts.handlee()),
-                        validator: (_val) {
-                          if (_val!.isEmpty) {
+                          labelText: 'Message',
+                          labelStyle: GoogleFonts.handlee(),
+                        ),
+                        validator: (val) {
+                          if (val!.isEmpty) {
                             return '*Required';
                           } else {
                             return null;
                           }
                         },
-                        onChanged: (_val) {
-                          _controller.memo.value = _val;
+                        onChanged: (val) {
+                          _controller.message.value = val;
                         },
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: ElevatedButton(
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            children: const [
-                              Icon(Icons.add),
-                              Text("Add Memo"),
+                            children: [
+                              Text("Send"),
+                              SizedBox(width: 5),
+                              Icon(Icons.send_rounded, size: 15),
                             ],
                           ),
                           onPressed: () {
                             if (key.currentState!.validate()) {
-                              // _controller.memoList.add(_controller.memo.value);
                               key.currentState!.save();
                               Get.back();
-                              // Add to Firestore
-                              /// CREATE
+
                               _memoCollection.add({
-                                'memo': _controller.memo.value,
+                                'message': _controller.message.value,
                                 'date':
                                     '${DateTime.now().day}.${DateTime.now().month}.${DateTime.now().year}',
                               });
