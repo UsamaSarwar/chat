@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final Controller _controller = Get.put(Controller());
-  final _memoCollection = FirebaseFirestore.instance.collection('chats');
+  final _messageCollection = FirebaseFirestore.instance.collection('chats');
   final GlobalKey<FormState> key = GlobalKey<FormState>();
 
   @override
@@ -38,17 +38,19 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
+      /// StreamBuilder is used to get the data from the firestore
+      /// QuerySnapshot is a snapshot of the data from the firestore
       body: StreamBuilder<QuerySnapshot>(
-        stream: _memoCollection.snapshots(),
+        /// stream is used to get the data from the firestore via the collection
+        stream: _messageCollection.snapshots(),
+        // builder is used to build the listview/view
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-
           final memoDocs = snapshot.data!.docs;
-
           return ListView.builder(
             physics: const BouncingScrollPhysics(),
             itemCount: memoDocs.length,
@@ -58,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return Dismissible(
                 key: Key(memoDoc.id),
                 onDismissed: (direction) =>
-                    _memoCollection.doc(memoDoc.id).delete(),
+                    _messageCollection.doc(memoDoc.id).delete(),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
                   child: Card(
@@ -138,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon:
                             const Icon(Icons.delete_forever, color: Colors.red),
                         onPressed: () {
-                          _memoCollection.doc(memoDoc.id).delete();
+                          _messageCollection.doc(memoDoc.id).delete();
                         },
                       ),
                       onLongPress: () {
@@ -153,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   maxLines: 1,
                                   initialValue: memoDoc['message'],
                                   onChanged: (value) {
-                                    _memoCollection
+                                    _messageCollection
                                         .doc(memoDoc.id)
                                         .update({'message': value});
                                   },
@@ -225,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               key.currentState!.save();
                               Get.back();
 
-                              _memoCollection.add({
+                              _messageCollection.add({
                                 'message': _controller.message.value,
                                 'date':
                                     '${DateTime.now().day}.${DateTime.now().month}.${DateTime.now().year}',
