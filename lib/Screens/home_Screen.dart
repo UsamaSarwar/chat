@@ -227,11 +227,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               key.currentState!.save();
                               Get.back();
 
-                              _messageCollection.add({
+                              _messageCollection.add(
+                                {
                                 'message': _controller.message.value,
                                 'date':
                                     '${DateTime.now().day}.${DateTime.now().month}.${DateTime.now().year}',
-                              });
+                              }
+                              
+                              );
                             }
                           },
                         ),
